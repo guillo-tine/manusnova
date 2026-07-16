@@ -1,9 +1,10 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { EMAIL } from "@/lib/links";
 
-/** Web3Forms access key. While empty, submissions fall back to a
-    prefilled email so the form never dead-ends. */
-const WEB3FORMS_KEY = "";
+/** FormSubmit delivers submissions to the team inbox with no backend.
+    If the service is unreachable (or not yet activated), submissions
+    fall back to a prefilled email so the form never dead-ends. */
+const FORM_ENDPOINT = "https://formsubmit.co/ajax/teammanusnova@gmail.com";
 
 /** Any button on the page can summon the sheet. */
 export function openRequestSheet() {
@@ -12,7 +13,7 @@ export function openRequestSheet() {
 
 const INK = "#1C1917";
 
-type Status = "idle" | "sending" | "filed" | "error";
+type Status = "idle" | "sending" | "filed";
 
 const RequestSheet = () => {
   const [open, setOpen] = useState(false);
@@ -151,24 +152,15 @@ const RequestSheet = () => {
     const contact = (form.elements.namedItem("contact") as HTMLInputElement).value;
     const message = (form.elements.namedItem("message") as HTMLTextAreaElement).value;
 
-    if (!WEB3FORMS_KEY) {
-      const body = `Name: ${name}\nContact: ${contact}\n\n${message}\n\n(Signed by hand on manusnova.org)`;
-      window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(
-        "Prosthetic device request"
-      )}&body=${encodeURIComponent(body)}`;
-      filed();
-      return;
-    }
-
     setStatus("sending");
     try {
-      const res = await fetch("https://api.web3forms.com/submit", {
+      const res = await fetch(FORM_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
-          access_key: WEB3FORMS_KEY,
-          subject: "Prosthetic device request (manusnova.org)",
-          from_name: "Manus Nova website",
+          _subject: "Prosthetic device request (manusnova.org)",
+          _template: "table",
+          _captcha: "false",
           name,
           contact,
           message,
@@ -176,10 +168,17 @@ const RequestSheet = () => {
         }),
       });
       const json = await res.json();
-      if (json.success) filed();
-      else setStatus("error");
+      if (json.success === true || json.success === "true") {
+        filed();
+        return;
+      }
+      throw new Error("submit failed");
     } catch {
-      setStatus("error");
+      const body = `Name: ${name}\nContact: ${contact}\n\n${message}\n\n(Signed by hand on manusnova.org)`;
+      window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(
+        "Prosthetic device request"
+      )}&body=${encodeURIComponent(body)}`;
+      filed();
     }
   };
 
@@ -332,11 +331,6 @@ const RequestSheet = () => {
                 </a>
               </div>
 
-              {status === "error" && (
-                <p className="text-xs text-clay">
-                  Something went wrong sending the form. Please email us instead at {EMAIL}.
-                </p>
-              )}
             </form>
           )}
         </div>
