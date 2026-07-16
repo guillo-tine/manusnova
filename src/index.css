@@ -6,164 +6,142 @@ html { scroll-behavior: smooth; }
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 5%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 5%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 5%;
-    --primary: 0 0% 5%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 5%;
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%;
-    --accent: 78 100% 58%;
-    --accent-foreground: 0 0% 5%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 78 100% 58%;
-    --radius: 0.5rem;
-    --lime: #AAFF1A;
+    /* ── Palette ───────────────────────────────────────
+       bone   warm off-white canvas
+       sheet  white, reserved for figure documents
+       ink    warm near-black
+       stone  warm gray, secondary text
+       clay   accent, drawn from the red PLA the hands
+              are actually printed in                    */
+    --bone-rgb: 245 242 236;
+    --sheet-rgb: 255 255 255;
+    --ink-rgb: 28 25 23;
+    --stone-rgb: 110 105 97;
+    --clay-rgb: 168 92 63;
+
+    --bone: rgb(var(--bone-rgb));
+    --sheet: rgb(var(--sheet-rgb));
+    --ink: rgb(var(--ink-rgb));
+    --stone: rgb(var(--stone-rgb));
+    --clay: rgb(var(--clay-rgb));
+    --line: rgb(var(--ink-rgb) / 0.12);
+
+    --font-sans: 'Instrument Sans', 'Helvetica Neue', sans-serif;
+    --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+
+    /* shadcn tokens, remapped to the palette */
+    --background: 40 31% 94%;
+    --foreground: 24 10% 10%;
+    --card: 40 31% 94%;
+    --card-foreground: 24 10% 10%;
+    --popover: 40 31% 96%;
+    --popover-foreground: 24 10% 10%;
+    --primary: 17 45% 45%;
+    --primary-foreground: 40 31% 94%;
+    --secondary: 40 20% 90%;
+    --secondary-foreground: 24 10% 10%;
+    --muted: 40 20% 90%;
+    --muted-foreground: 37 6% 41%;
+    --accent: 17 45% 45%;
+    --accent-foreground: 40 31% 94%;
+    --destructive: 17 45% 45%;
+    --destructive-foreground: 40 31% 94%;
+    --border: 30 8% 80%;
+    --input: 30 8% 72%;
+    --ring: 17 45% 45%;
+    --radius: 0rem;
   }
 }
 
 @layer base {
   * { @apply border-border; }
   body {
-    @apply bg-background text-foreground;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--bone);
+    color: var(--ink);
+    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
-  h1, h2, h3, h4 { letter-spacing: -0.03em; }
+  ::selection {
+    background-color: var(--ink);
+    color: var(--bone);
+  }
+  :focus-visible {
+    outline: 2px solid var(--clay);
+    outline-offset: 2px;
+  }
 }
 
-/* ── Entrance animations ─────────────────────────── */
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(110%); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(28px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-@keyframes lineGrow {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
-}
-@keyframes pulseGlow {
-  0%, 100% { opacity: 0.4; transform: scale(1); }
-  50%       { opacity: 0.8; transform: scale(1.08); }
-}
-@keyframes floatY {
-  0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-10px); }
-}
-@keyframes rotateSlow {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+@layer components {
+  /* The one primary action. Everything else defers to it. */
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-full bg-clay text-bone font-medium text-sm sm:text-base px-7 py-3.5 transition-colors hover:bg-[#8F4E36];
+  }
+  /* Quiet secondary links (Donate, contact routes) */
+  .link-quiet {
+    @apply text-stone hover:text-ink transition-colors underline-offset-4 hover:underline;
+  }
+  /* Mono micro-label: the only CAD trace that survives */
+  .fig-label {
+    @apply font-mono text-[10px] uppercase tracking-[0.14em] text-stone;
+  }
 }
 
-.animate-slide-up    { animation: slideUp 1s cubic-bezier(0.16,1,0.3,1) both; }
-.animate-fade-up     { animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) both; }
-.animate-fade-in     { animation: fadeIn 0.8s ease both; }
-.animate-line-grow   { animation: lineGrow 1.2s cubic-bezier(0.16,1,0.3,1) both; transform-origin: left; }
-.animate-pulse-glow  { animation: pulseGlow 3s ease-in-out infinite; }
-.animate-float       { animation: floatY 4s ease-in-out infinite; }
-.animate-rotate-slow { animation: rotateSlow 20s linear infinite; }
-
-.delay-100  { animation-delay: 100ms; }
-.delay-200  { animation-delay: 200ms; }
-.delay-300  { animation-delay: 300ms; }
-.delay-400  { animation-delay: 400ms; }
-.delay-500  { animation-delay: 500ms; }
-.delay-600  { animation-delay: 600ms; }
-.delay-700  { animation-delay: 700ms; }
-.delay-800  { animation-delay: 800ms; }
-.delay-900  { animation-delay: 900ms; }
-
-/* ── Scroll reveal ───────────────────────────────── */
+/* ── The one motion idea: soft rise + fade, once ──── */
 .reveal {
   opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.85s cubic-bezier(0.16,1,0.3,1),
-              transform 0.85s cubic-bezier(0.16,1,0.3,1);
+  transform: translateY(14px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .reveal.visible { opacity: 1; transform: translateY(0); }
-.reveal-stagger > * {
+
+.reveal-rows > * {
   opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1),
-              transform 0.7s cubic-bezier(0.16,1,0.3,1);
+  transform: translateY(10px);
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.reveal-stagger.visible > *:nth-child(1) { opacity:1; transform:translateY(0); transition-delay: 0ms; }
-.reveal-stagger.visible > *:nth-child(2) { opacity:1; transform:translateY(0); transition-delay: 120ms; }
-.reveal-stagger.visible > *:nth-child(3) { opacity:1; transform:translateY(0); transition-delay: 240ms; }
-.reveal-stagger.visible > *:nth-child(4) { opacity:1; transform:translateY(0); transition-delay: 360ms; }
+.reveal-rows.visible > * { opacity: 1; transform: none; }
+.reveal-rows.visible > *:nth-child(1) { transition-delay: 0ms; }
+.reveal-rows.visible > *:nth-child(2) { transition-delay: 80ms; }
+.reveal-rows.visible > *:nth-child(3) { transition-delay: 160ms; }
+.reveal-rows.visible > *:nth-child(4) { transition-delay: 240ms; }
+.reveal-rows.visible > *:nth-child(5) { transition-delay: 320ms; }
+.reveal-rows.visible > *:nth-child(6) { transition-delay: 400ms; }
+.reveal-rows.visible > *:nth-child(7) { transition-delay: 480ms; }
+.reveal-rows.visible > *:nth-child(8) { transition-delay: 560ms; }
 
-/* ── Marquee ─────────────────────────────────────── */
-.marquee-track { animation: marquee 18s linear infinite; }
-.marquee-track:hover { animation-play-state: paused; }
-
-/* ── Background grid / noise ─────────────────────── */
-.bg-grid {
-  background-image:
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
+/* ── Exploded-diagram hotspots ────────────────────── */
+.hotspot {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  margin: -11px;
+  border-radius: 9999px;
+  border: 1.5px solid var(--clay);
+  background: rgb(var(--sheet-rgb) / 0.85);
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s;
 }
-.bg-dot {
-  background-image: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
-  background-size: 28px 28px;
-}
-/* CSS noise texture using SVG filter */
-.noise::before {
+.hotspot::after {
   content: '';
   position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  background-size: 256px 256px;
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0.6;
+  inset: 5px;
+  border-radius: 9999px;
+  background: var(--clay);
+  opacity: 0;
+  transition: opacity 0.25s;
 }
+.hotspot:hover { transform: scale(1.2); }
+.hotspot[data-active="true"] { transform: scale(1.2); }
+.hotspot[data-active="true"]::after { opacity: 1; }
 
-/* ── Glow utilities ──────────────────────────────── */
-.glow-lime {
-  box-shadow: 0 0 40px rgba(170,255,26,0.2), 0 0 80px rgba(170,255,26,0.08);
-}
-.glow-lime-sm {
-  box-shadow: 0 0 20px rgba(170,255,26,0.15);
-}
-.hover-glow-lime:hover {
-  box-shadow: 0 0 30px rgba(170,255,26,0.18), 0 8px 32px rgba(0,0,0,0.4);
-}
-.hover-glow-card:hover {
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(170,255,26,0.12);
-}
-
-/* ── Text stroke utility ─────────────────────────── */
-.text-stroke-white {
-  -webkit-text-stroke: 1px rgba(255,255,255,0.15);
-  color: transparent;
-}
-.text-stroke-lime {
-  -webkit-text-stroke: 1.5px rgba(170,255,26,0.4);
-  color: transparent;
-}
-
-/* ── Vertical text ───────────────────────────────── */
-.writing-vertical {
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
+/* ── Reduced motion ──────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal, .reveal-rows > * { opacity: 1 !important; transform: none !important; }
 }

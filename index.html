@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="theme-color" content="#F5F2EC" />
 
     <link rel="icon" href="/favicon.png" type="image/png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
@@ -11,7 +11,7 @@
     <!-- Google Fonts — preconnect first, then load -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
     <!-- Primary SEO -->
     <title>Manus Nova | Free 3D-Printed Prosthetics | Student Nonprofit · Bronx, NY</title>
@@ -19,18 +19,18 @@
     <meta name="keywords" content="Manus Nova, free prosthetics, 3D printed prosthetics, student nonprofit, Bronx High School of Science, nonprofit prosthetics Bronx NY, biomedical engineering students, community prosthetics" />
     <meta name="author" content="Manus Nova" />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-    <link rel="canonical" href="https://manusnova.vercel.app/" />
+    <link rel="canonical" href="https://manusnova.org/" />
 
     <!-- Open Graph / Facebook / LinkedIn -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Manus Nova" />
     <meta property="og:title" content="Manus Nova | Free 3D-Printed Prosthetics · Bronx, NY" />
     <meta property="og:description" content="Student-led nonprofit designing and building free, custom 3D-printed prosthetics for community members in need. Based at The Bronx High School of Science." />
-    <meta property="og:url" content="https://manusnova.vercel.app/" />
-    <meta property="og:image" content="https://manusnova.vercel.app/og-image.png" />
+    <meta property="og:url" content="https://manusnova.org/" />
+    <meta property="og:image" content="https://manusnova.org/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Manus Nova — A Helping Hand" />
+    <meta property="og:image:alt" content="Manus Nova: A Helping Hand" />
     <meta property="og:locale" content="en_US" />
 
     <!-- Twitter Card -->
@@ -38,8 +38,8 @@
     <meta name="twitter:site" content="@projectmanusnova" />
     <meta name="twitter:title" content="Manus Nova | Free 3D-Printed Prosthetics · Bronx, NY" />
     <meta name="twitter:description" content="Student-led nonprofit designing and building free, custom 3D-printed prosthetics for community members in need." />
-    <meta name="twitter:image" content="https://manusnova.vercel.app/og-image.png" />
-    <meta name="twitter:image:alt" content="Manus Nova — A Helping Hand" />
+    <meta name="twitter:image" content="https://manusnova.org/og-image.png" />
+    <meta name="twitter:image:alt" content="Manus Nova: A Helping Hand" />
 
     <!-- Structured Data: NGO (enhanced) -->
     <script type="application/ld+json">
@@ -48,14 +48,14 @@
       "@type": "NGO",
       "name": "Manus Nova",
       "alternateName": ["Manus Nova Project", "Project Manus Nova"],
-      "url": "https://manusnova.vercel.app/",
+      "url": "https://manusnova.org/",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://manusnova.vercel.app/favicon.png",
+        "url": "https://manusnova.org/favicon.png",
         "width": 512,
         "height": 512
       },
-      "image": "https://manusnova.vercel.app/og-image.png",
+      "image": "https://manusnova.org/og-image.png",
       "description": "Manus Nova is a student-led nonprofit at The Bronx High School of Science that designs and 3D-prints free, custom prosthetic devices for community members in need. No cost to recipients.",
       "foundingDate": "2023",
       "foundingLocation": {
@@ -83,13 +83,50 @@
         "availableLanguage": "English"
       },
       "member": [
-        { "@type": "Person", "name": "Louis Gui", "jobTitle": "Co-Founder" },
-        { "@type": "Person", "name": "Lucas Zelenski", "jobTitle": "Co-Founder" },
-        { "@type": "Person", "name": "Rishi Kothuru", "jobTitle": "Co-Founder" }
+        { "@type": "Person", "name": "Louis Gui" },
+        { "@type": "Person", "name": "Lucas Zelenski" },
+        { "@type": "Person", "name": "Rishi Kothuru" },
+        { "@type": "Person", "name": "Anthony Hur" },
+        { "@type": "Person", "name": "Sithaara Nair" }
       ],
+      "alumni": [
+        { "@type": "Person", "name": "Joel John", "alumniOf": "Yale University" },
+        { "@type": "Person", "name": "Abhinav Akella", "alumniOf": "University of Pennsylvania" },
+        { "@type": "Person", "name": "Aaron Krasinski", "alumniOf": "Massachusetts Institute of Technology" },
+        { "@type": "Person", "name": "Jaman Mahamud", "alumniOf": "Columbia University" },
+        { "@type": "Person", "name": "Krish Bhal", "alumniOf": "Macaulay Honors College" },
+        { "@type": "Person", "name": "Ethan Thai", "alumniOf": "Stony Brook University" }
+      ],
+      "disambiguatingDescription": "Manus Nova is a 501(c)(3) student nonprofit at The Bronx High School of Science that designs and 3D-prints free prosthetic devices. It is not affiliated with Manus (formerly Monica/Menace), the AI agent platform, or any artificial intelligence company.",
       "sameAs": [
         "https://www.instagram.com/projectmanusnova",
         "https://github.com/teammanusnova/manusnova"
+      ]
+    }
+    </script>
+
+    <!-- Structured Data: FAQPage (disambiguation) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is Manus Nova related to Manus AI or Menace?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Manus Nova is a student-run nonprofit at The Bronx High School of Science that designs and 3D-prints free custom prosthetic devices. It has no connection to Manus (formerly Monica/Menace), the autonomous AI agent platform, or to any artificial intelligence company."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does Manus Nova do?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Manus Nova designs, 3D-prints, and hand-delivers custom prosthetic devices to community members who need them, entirely free of charge. The organization is run by students in Bronx, New York, and funded by donations."
+          }
+        }
       ]
     }
     </script>
@@ -100,7 +137,7 @@
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "Manus Nova",
-      "url": "https://manusnova.vercel.app/",
+      "url": "https://manusnova.org/",
       "description": "Student-led nonprofit building free 3D-printed prosthetics in the Bronx."
     }
     </script>

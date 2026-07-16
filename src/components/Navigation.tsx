@@ -1,109 +1,56 @@
-import { useState, useEffect } from "react";
-import logo from "@/assets/logo.png";
+import { useEffect, useState } from "react";
+import { scrollToId, scrollToTop } from "@/lib/scroll";
+import { REQUEST_MAILTO, DONATE_MAILTO } from "@/lib/links";
 
-const navLinks = [
-  { label: "Mission", id: "mission" },
-  { label: "Process", id: "process" },
+const links = [
+  { label: "How it's built", id: "process" },
   { label: "Team", id: "team" },
-  { label: "Support", id: "donations" },
-  { label: "Contact", id: "contact" },
 ];
 
+/** Stays out of the way until the reader passes the first screen. */
 const Navigation = () => {
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [shown, setShown] = useState(false);
 
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", handler, { passive: true });
-    return () => window.removeEventListener("scroll", handler);
+    const onScroll = () => setShown(window.scrollY > window.innerHeight * 0.6);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  const scrollTo = (id: string) => {
-    setMenuOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-500 ${
-        scrolled
-          ? "bg-white/95 backdrop-blur-md border-b border-black/8 shadow-sm"
-          : "bg-transparent border-b border-white/0"
+      className={`fixed top-0 inset-x-0 z-50 bg-bone/90 backdrop-blur border-b border-ink/10 transition-all duration-500 ${
+        shown ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
       }`}
+      aria-hidden={!shown}
     >
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-
+      <div className="max-w-6xl mx-auto px-5 sm:px-8 h-14 flex items-center justify-between">
         <button
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="flex items-center gap-2.5 hover:opacity-75 transition-opacity"
+          onClick={scrollToTop}
+          className="font-mono text-[11px] uppercase tracking-[0.14em] font-medium text-ink"
         >
-          <img src={logo} alt="Manus Nova logo" className="h-7 w-7 rounded-full object-cover" />
-          <span className={`font-semibold text-sm tracking-tight transition-colors ${scrolled ? "text-zinc-950" : "text-white"}`}>
-            Manus Nova
-          </span>
+          Manus Nova
         </button>
 
-        <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
+        <div className="flex items-center gap-5 sm:gap-7">
+          {links.map((link) => (
             <button
               key={link.id}
-              onClick={() => scrollTo(link.id)}
-              className={`text-sm font-medium transition-colors ${
-                scrolled ? "text-zinc-500 hover:text-zinc-950" : "text-white/60 hover:text-white"
-              }`}
+              onClick={() => scrollToId(link.id)}
+              className="link-quiet text-sm hidden sm:block"
             >
               {link.label}
             </button>
           ))}
-        </div>
-
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => scrollTo("contact")}
-            className={`hidden sm:inline-flex text-sm font-semibold px-4 py-2 rounded-lg transition-all ${
-              scrolled
-                ? "bg-zinc-950 text-white hover:bg-zinc-800"
-                : "bg-accent text-zinc-950 hover:bg-accent/90"
-            }`}
-          >
-            Get Involved
-          </button>
-
-          <button
-            className={`md:hidden p-2 transition-colors ${scrolled ? "text-zinc-600" : "text-white/70"}`}
-            onClick={() => setMenuOpen((o) => !o)}
-            aria-label="Toggle menu"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              {menuOpen
-                ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
-                : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" />
-              }
-            </svg>
-          </button>
+          <a href={DONATE_MAILTO} className="link-quiet text-sm hidden sm:block">
+            Donate
+          </a>
+          <a href={REQUEST_MAILTO} className="btn-primary !px-5 !py-2 !text-sm">
+            Request a device
+          </a>
         </div>
       </div>
-
-      {menuOpen && (
-        <div className="md:hidden bg-zinc-950 border-t border-white/5 px-6 py-5 flex flex-col gap-4">
-          {navLinks.map((link) => (
-            <button
-              key={link.id}
-              onClick={() => scrollTo(link.id)}
-              className="text-sm font-medium text-white/60 hover:text-white text-left transition-colors"
-            >
-              {link.label}
-            </button>
-          ))}
-          <button
-            onClick={() => scrollTo("contact")}
-            className="text-sm font-semibold text-accent text-left"
-          >
-            Get Involved →
-          </button>
-        </div>
-      )}
     </nav>
   );
 };

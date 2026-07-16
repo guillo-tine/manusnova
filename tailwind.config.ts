@@ -18,7 +18,17 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				sans: ['"Instrument Sans"', 'Helvetica Neue', 'sans-serif'],
+				mono: ['"IBM Plex Mono"', '"Courier New"', 'monospace'],
+			},
 			colors: {
+				/* ── Palette (see src/index.css :root) ── */
+				bone: 'rgb(var(--bone-rgb) / <alpha-value>)',
+				sheet: 'rgb(var(--sheet-rgb) / <alpha-value>)',
+				ink: 'rgb(var(--ink-rgb) / <alpha-value>)',
+				stone: 'rgb(var(--stone-rgb) / <alpha-value>)',
+				clay: 'rgb(var(--clay-rgb) / <alpha-value>)',
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
@@ -51,10 +61,6 @@ export default {
 				card: {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
-				},
-				'warm-accent': {
-					DEFAULT: 'hsl(var(--warm-accent))',
-					foreground: 'hsl(var(--warm-accent-foreground))'
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
