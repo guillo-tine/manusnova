@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { scrollToId, scrollToTop } from "@/lib/scroll";
-import { REQUEST_MAILTO, DONATE_MAILTO } from "@/lib/links";
+import { openRequestSheet } from "@/components/RequestSheet";
+import { DONATE_MAILTO } from "@/lib/links";
 
 const links = [
   { label: "How it's built", id: "process" },
@@ -46,9 +47,9 @@ const Navigation = () => {
           <a href={DONATE_MAILTO} className="link-quiet text-sm hidden sm:block">
             Donate
           </a>
-          <a href={REQUEST_MAILTO} className="btn-primary !px-5 !py-2 !text-sm">
+          <button onClick={openRequestSheet} className="btn-primary !px-5 !py-2 !text-sm">
             Request a device
-          </a>
+          </button>
         </div>
       </div>
     </nav>

@@ -15,18 +15,18 @@ const Process = () => {
 
   return (
     <section id="process" className="border-t border-ink/10">
-      <div className="max-w-6xl mx-auto px-5 sm:px-8 py-20 sm:py-28">
+      <div className="max-w-6xl mx-auto px-5 sm:px-8 py-14 sm:py-20">
         <div ref={intro.ref} className={`reveal ${intro.visible ? "visible" : ""}`}>
-          <p className="fig-label mb-8">02 · How it's built</p>
+          <p className="fig-label mb-6">02 · How it's built</p>
           <h2 className="text-3xl sm:text-5xl font-semibold tracking-tight leading-tight max-w-2xl">
             Measured, printed, and assembled by hand.
           </h2>
-          <p className="mt-6 text-base sm:text-lg text-stone leading-relaxed max-w-xl">
+          <p className="mt-5 text-base sm:text-lg text-stone leading-relaxed max-w-xl">
             Each device starts with the recipient's measurements. The parts print overnight
             in PLA, students assemble and tension them after school, and the finished hand
             is fitted in person. Thirty steps, start to finish.
           </p>
-          <p className="mt-8 font-mono text-[11px] uppercase tracking-[0.14em] text-ink">
+          <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.14em] text-ink">
             {steps.map((step, i) => (
               <span key={step}>
                 <span className="text-stone mr-1.5">{String(i + 1).padStart(2, "0")}</span>
@@ -39,7 +39,7 @@ const Process = () => {
 
         <div
           ref={figures.ref}
-          className={`reveal-rows ${figures.visible ? "visible" : ""} mt-14 sm:mt-20 space-y-12 sm:space-y-16`}
+          className={`reveal-rows ${figures.visible ? "visible" : ""} mt-10 sm:mt-12 space-y-10 sm:space-y-12`}
         >
           {/* Fig. 2: the real assembly sheet, cropped to one working band */}
           <figure>

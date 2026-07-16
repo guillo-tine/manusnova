@@ -135,6 +135,14 @@ html { scroll-behavior: smooth; }
 .hotspot[data-active="true"] { transform: scale(1.2); }
 .hotspot[data-active="true"]::after { opacity: 1; }
 
+/* ── Filed stamp on the request sheet ─────────────── */
+@keyframes stampIn {
+  0%   { opacity: 0; transform: scale(1.5) rotate(-9deg); }
+  60%  { opacity: 1; transform: scale(0.96) rotate(-4deg); }
+  100% { opacity: 1; transform: scale(1) rotate(-4deg); }
+}
+.stamp { animation: stampIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
 /* ── Reduced motion ──────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -144,4 +152,5 @@ html { scroll-behavior: smooth; }
     transition-duration: 0.01ms !important;
   }
   .reveal, .reveal-rows > * { opacity: 1 !important; transform: none !important; }
+  .stamp { animation: none; opacity: 1; transform: rotate(-4deg); }
 }

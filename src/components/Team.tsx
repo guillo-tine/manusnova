@@ -17,9 +17,9 @@ const Team = () => {
 
   return (
     <section id="team" className="border-t border-ink/10">
-      <div className="max-w-6xl mx-auto px-5 sm:px-8 py-20 sm:py-28">
+      <div className="max-w-6xl mx-auto px-5 sm:px-8 py-14 sm:py-20">
         <div ref={block.ref} className={`reveal-rows ${block.visible ? "visible" : ""}`}>
-          <p className="fig-label mb-8">04 · Who</p>
+          <p className="fig-label mb-6">04 · Who</p>
 
           <div>
             {crew.map((name) => (
@@ -40,7 +40,7 @@ const Team = () => {
             </a>
           </p>
 
-          <div className="mt-14">
+          <div className="mt-10">
             <p className="fig-label mb-4">Alumni · Class of 2026</p>
             <p className="text-sm sm:text-base leading-relaxed max-w-2xl">
               {alumni.map((person, i) => (

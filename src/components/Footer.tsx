@@ -3,7 +3,7 @@ import { EMAIL, INSTAGRAM } from "@/lib/links";
 /** One quiet line, then the small print. */
 const Footer = () => (
   <footer className="border-t border-ink/10">
-    <div className="max-w-6xl mx-auto px-5 sm:px-8 py-10">
+    <div className="max-w-6xl mx-auto px-5 sm:px-8 py-8">
       <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2 text-sm text-stone">
         <a href={`mailto:${EMAIL}`} className="link-quiet break-all">
           {EMAIL}
