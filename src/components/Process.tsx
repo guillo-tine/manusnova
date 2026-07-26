@@ -1,9 +1,16 @@
 import { Suspense, lazy, useState } from "react";
 import { useNearViewport } from "@/hooks/useNearViewport";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import montage from "@/assets/build-montage.webp";
 
 const ModelViewport = lazy(() => import("@/components/three/ModelViewport"));
+
+const ViewportNotice = ({ text }: { text: string }) => (
+  <div className="w-full h-full flex items-center justify-center px-6 text-center">
+    <p className="fig-label">{text}</p>
+  </div>
+);
 
 const steps = ["Measure", "Print", "Assemble", "Deliver"];
 
@@ -75,9 +82,11 @@ const Process = () => {
           <figure>
             <div ref={viewport.ref} className="border border-ink/10 bg-sheet h-[380px] sm:h-[480px]">
               {viewport.near && (
-                <Suspense fallback={null}>
-                  <ModelViewport />
-                </Suspense>
+                <ErrorBoundary fallback={<ViewportNotice text="Model preview unavailable in this browser" />}>
+                  <Suspense fallback={<ViewportNotice text="Loading model…" />}>
+                    <ModelViewport />
+                  </Suspense>
+                </ErrorBoundary>
               )}
             </div>
             <figcaption className="fig-label mt-3">

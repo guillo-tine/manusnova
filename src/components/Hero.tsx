@@ -1,9 +1,8 @@
-import ExplodedDiagram from "@/components/ExplodedDiagram";
 import { openRequestSheet } from "@/components/RequestSheet";
 import { DONATE_MAILTO } from "@/lib/links";
 
 const Hero = () => (
-  <header className="max-w-6xl mx-auto px-5 sm:px-8 pt-6 sm:pt-8 pb-12 sm:pb-16">
+  <header className="max-w-6xl mx-auto px-5 sm:px-8 pt-6 sm:pt-8 pb-16 sm:pb-24">
     <div className="flex items-baseline justify-between mb-10 sm:mb-14">
       <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink font-medium">
         Manus Nova
@@ -27,10 +26,6 @@ const Hero = () => (
       <a href={DONATE_MAILTO} className="link-quiet text-sm sm:text-base">
         Donate
       </a>
-    </div>
-
-    <div className="mt-10 sm:mt-14">
-      <ExplodedDiagram />
     </div>
   </header>
 );
