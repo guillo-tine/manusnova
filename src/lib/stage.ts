@@ -16,6 +16,8 @@ export function startSmoothScroll() {
   window.scrollTo(0, 0);
   const lenis = new Lenis({ anchors: true, lerp: 0.07, wheelMultiplier: 0.9, touchMultiplier: 1.4 });
   stage.lenis = lenis;
+  // held still under the opening sequence; Intro releases it
+  if (!document.documentElement.classList.contains("is-ready")) lenis.stop();
   let raf = requestAnimationFrame(function loop(time) {
     lenis.raf(time);
     raf = requestAnimationFrame(loop);

@@ -8,11 +8,16 @@ const HONESTY =
 /** Pinned while each word brightens in turn as the reader scrolls. */
 const Honesty = () => {
   const words = useRef<HTMLSpanElement[]>([]);
+  const shown = useRef<number[]>([]);
   const list = HONESTY.split(" ");
   const scene = usePinnedProgress<HTMLElement>((p) => {
     const lit = Math.min(1, p / 0.8) * list.length;
     words.current.forEach((w, i) => {
-      if (w) w.style.opacity = String(Math.min(1, Math.max(0.18, lit - i + 0.18)));
+      const o = Math.round(Math.min(1, Math.max(0.18, lit - i + 0.18)) * 100) / 100;
+      if (w && shown.current[i] !== o) {
+        shown.current[i] = o;
+        w.style.opacity = String(o);
+      }
     });
   });
 

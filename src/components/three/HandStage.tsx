@@ -14,7 +14,7 @@ import { reducedMotion, stage } from "@/lib/stage";
 type Look = { e: number; rx: number; o: number; mo: number };
 
 const LOOKS: Record<string, Look> = {
-  hero:    { e: 0.45, rx: 0.6,  o: 1, mo: 1 },
+  hero:    { e: 0.28, rx: 0.5,  o: 1, mo: 1 },
   design:  { e: 0.08, rx: 0.7,  o: 1, mo: 1 },
   free:    { e: 0.8,  rx: 0.4,  o: 1, mo: 1 },
   team:    { e: 0.3,  rx: 0.6,  o: 1, mo: 0.14 },
@@ -199,9 +199,9 @@ const Cluster = () => {
 const HandStage = () => (
   <div className="fixed inset-0 z-0 pointer-events-none" aria-hidden="true">
     <Canvas
-      dpr={[1, 2]}
+      dpr={[1, 1.75]}
       camera={{ position: [0, 0, 7], fov: 30 }}
-      gl={{ antialias: true, alpha: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 0.95 }}
+      gl={{ antialias: true, alpha: true, powerPreference: "high-performance", toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 0.95 }}
     >
       <ambientLight intensity={0.6} />
       <directionalLight position={[4, 5, 5]} intensity={4.5} color="#fff4ec" />

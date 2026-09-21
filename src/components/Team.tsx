@@ -43,19 +43,18 @@ const Team = () => (
         </ul>
 
         <div data-reveal>
-        <p className="mt-12 text-sm text-stone">Alumni, class of 2026</p>
-        <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-1.5 text-[15px]">
-          {alumni.map((person) => (
-            <li key={person.name}>
-              <span className="text-ink">{person.name}</span>
-              <span className="text-stone"> · {person.dest}</span>
-            </li>
-          ))}
-        </ul>
-
-        <a href={JOIN_MAILTO} className="link-arrow mt-12 inline-block">
-          Join the team
-        </a>
+          <p className="mt-12 text-sm text-stone">Alumni, class of 2026</p>
+          <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-1.5 text-[15px]">
+            {alumni.map((person) => (
+              <li key={person.name}>
+                <span className="text-ink">{person.name}</span>
+                <span className="text-stone"> · {person.dest}</span>
+              </li>
+            ))}
+          </ul>
+          <a href={JOIN_MAILTO} className="link-arrow mt-12 inline-block">
+            Join the team
+          </a>
         </div>
       </div>
     </div>

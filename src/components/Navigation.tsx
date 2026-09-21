@@ -1,4 +1,4 @@
-import { openRequestSheet } from "@/components/RequestSheet";
+import { openRequestSheet } from "@/lib/requestSheet";
 import { DONATE_MAILTO } from "@/lib/links";
 import { scrollToTop } from "@/lib/stage";
 

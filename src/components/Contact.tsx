@@ -1,4 +1,4 @@
-import { openRequestSheet } from "@/components/RequestSheet";
+import { openRequestSheet } from "@/lib/requestSheet";
 import { EMAIL, INSTAGRAM } from "@/lib/links";
 
 const Contact = () => (
@@ -9,25 +9,25 @@ const Contact = () => (
   >
     <div data-slot className="flex-1 min-h-0 w-full max-w-[720px] mb-[4svh]" />
     <div data-reveal className="flex flex-col items-center">
-    <h2 className="text-[clamp(2.6rem,5.6vw,4.75rem)] font-semibold tracking-[-0.04em] leading-[1.0]">
-      Need a hand?
-    </h2>
-    <p className="mt-5 max-w-[32rem] text-[clamp(1.05rem,1.5vw,1.3rem)] leading-[1.5] tracking-[-0.01em] text-stone text-balance">
-      Tell us who it's for. A student replies within a day or two, fittings are free, and a
-      build takes two to four weeks.
-    </p>
-    <button onClick={openRequestSheet} className="btn-primary mt-8">
-      Request a device
-    </button>
-    <p className="mt-8 text-sm text-stone">
-      <a href={`mailto:${EMAIL}`} className="link-quiet">
-        {EMAIL}
-      </a>
-      <span className="mx-2.5">·</span>
-      <a href={INSTAGRAM} target="_blank" rel="noopener noreferrer" className="link-quiet">
-        Instagram
-      </a>
-    </p>
+      <h2 className="text-[clamp(2.6rem,5.6vw,4.75rem)] font-semibold tracking-[-0.04em] leading-[1.0]">
+        Need a hand?
+      </h2>
+      <p className="mt-5 max-w-[32rem] text-[clamp(1.05rem,1.5vw,1.3rem)] leading-[1.5] tracking-[-0.01em] text-stone text-balance">
+        Tell us who it's for. A student replies within a day or two, fittings are free, and a
+        build takes two to four weeks.
+      </p>
+      <button onClick={openRequestSheet} className="btn-primary mt-8">
+        Request a device
+      </button>
+      <p className="mt-8 text-sm text-stone">
+        <a href={`mailto:${EMAIL}`} className="link-quiet">
+          {EMAIL}
+        </a>
+        <span className="mx-2.5">·</span>
+        <a href={INSTAGRAM} target="_blank" rel="noopener noreferrer" className="link-quiet">
+          Instagram
+        </a>
+      </p>
     </div>
   </section>
 );

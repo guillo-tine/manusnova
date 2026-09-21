@@ -145,7 +145,7 @@
   --fade: clamp(0, calc(1 - var(--p, 0) * 2.4), 1);
   opacity: var(--fade);
   transform: translateY(calc(var(--p, 0) * -90px)) scale(calc(1 - var(--p, 0) * 0.08));
-  filter: blur(calc(var(--p, 0) * 10px));
+  filter: blur(calc(var(--p, 0) * 6px));
   will-change: opacity, transform, filter;
 }
 

@@ -1,4 +1,4 @@
-import { openRequestSheet } from "@/components/RequestSheet";
+import { openRequestSheet } from "@/lib/requestSheet";
 import { usePinnedProgress } from "@/hooks/usePinnedProgress";
 
 /** Pinned for two screens: the headline holds, then lifts away while the parts keep turning. */

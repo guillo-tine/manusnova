@@ -7,11 +7,6 @@ import { stage } from "@/lib/stage";
     fall back to a prefilled email so the form never dead-ends. */
 const FORM_ENDPOINT = "https://formsubmit.co/ajax/teammanusnova@gmail.com";
 
-/** Any button on the page can summon the sheet. */
-export function openRequestSheet() {
-  window.dispatchEvent(new Event("open-request-sheet"));
-}
-
 type Status = "idle" | "sending" | "sent";
 
 const RequestSheet = () => {
