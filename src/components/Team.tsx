@@ -1,7 +1,14 @@
-import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { JOIN_MAILTO } from "@/lib/links";
 
-const crew = ["Louis Gui", "Lucas Zelenski", "Rishi Kothuru", "Anthony Hur", "Sithaara Nair"];
+const crew = [
+  "Louis Gui",
+  "Lucas Zelenski",
+  "Rishi Kothuru",
+  "Anthony Hur",
+  "Sithaara Nair",
+  "Aldrich Zheng",
+  "Sadek Nabil",
+];
 
 const alumni = [
   { name: "Joel John", dest: "Yale" },
@@ -12,50 +19,47 @@ const alumni = [
   { name: "Ethan Thai", dest: "Stony Brook" },
 ];
 
-const Team = () => {
-  const block = useScrollReveal(0.15);
+const Team = () => (
+  <section id="team" data-pose="team" className="relative py-[16svh]">
+    {/* the model sits in the right half while the names scroll past; on phones it dims behind them */}
+    <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div data-slot className="sticky top-[52px] h-[calc(100svh-52px)] md:ml-[50%]" />
+    </div>
+    <div className="relative w-full max-w-[1120px] mx-auto px-6 grid md:grid-cols-2">
+      <div className="md:pr-8">
+        <h2 data-reveal className="text-[clamp(2.4rem,5vw,4.25rem)] font-semibold tracking-[-0.035em] leading-[1.02] text-balance">
+          The students printing them.
+        </h2>
 
-  return (
-    <section id="team" className="border-t border-ink/10">
-      <div className="max-w-6xl mx-auto px-5 sm:px-8 py-14 sm:py-20">
-        <div ref={block.ref} className={`reveal-rows ${block.visible ? "visible" : ""}`}>
-          <p className="fig-label mb-6">04 · Who</p>
+        <ul data-reveal-stagger className="mt-10 space-y-1">
+          {crew.map((name) => (
+            <li
+              key={name}
+              className="text-[clamp(1.5rem,2.6vw,2.1rem)] font-medium tracking-[-0.025em] leading-[1.3]"
+            >
+              {name}
+            </li>
+          ))}
+        </ul>
 
-          <div>
-            {crew.map((name) => (
-              <p
-                key={name}
-                className="text-3xl sm:text-5xl font-semibold tracking-tight leading-snug"
-              >
-                {name}
-              </p>
-            ))}
-          </div>
+        <div data-reveal>
+        <p className="mt-12 text-sm text-stone">Alumni, class of 2026</p>
+        <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-1.5 text-[15px]">
+          {alumni.map((person) => (
+            <li key={person.name}>
+              <span className="text-ink">{person.name}</span>
+              <span className="text-stone"> · {person.dest}</span>
+            </li>
+          ))}
+        </ul>
 
-          <p className="mt-6 text-stone text-sm sm:text-base">
-            Students at The Bronx High School of Science. There is room for one more name
-            here.{" "}
-            <a href={JOIN_MAILTO} className="link-quiet underline text-ink">
-              Apply
-            </a>
-          </p>
-
-          <div className="mt-10">
-            <p className="fig-label mb-4">Alumni · Class of 2026</p>
-            <p className="text-sm sm:text-base leading-relaxed max-w-2xl">
-              {alumni.map((person, i) => (
-                <span key={person.name} className="whitespace-nowrap">
-                  <span className="text-ink font-medium">{person.name}</span>
-                  <span className="text-stone">, {person.dest}</span>
-                  {i < alumni.length - 1 && <span className="text-stone mx-2">·</span>}
-                </span>
-              ))}
-            </p>
-          </div>
+        <a href={JOIN_MAILTO} className="link-arrow mt-12 inline-block">
+          Join the team
+        </a>
         </div>
       </div>
-    </section>
-  );
-};
+    </div>
+  </section>
+);
 
 export default Team;

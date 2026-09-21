@@ -1,33 +1,32 @@
 import { openRequestSheet } from "@/components/RequestSheet";
-import { DONATE_MAILTO } from "@/lib/links";
+import { usePinnedProgress } from "@/hooks/usePinnedProgress";
 
-const Hero = () => (
-  <header className="max-w-6xl mx-auto px-5 sm:px-8 pt-6 sm:pt-8 pb-16 sm:pb-24">
-    <div className="flex items-baseline justify-between mb-10 sm:mb-14">
-      <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink font-medium">
-        Manus Nova
-      </p>
-      <p className="fig-label">Bronx, NY · Est. 2023</p>
-    </div>
+/** Pinned for two screens: the headline holds, then lifts away while the parts keep turning. */
+const Hero = () => {
+  const scene = usePinnedProgress<HTMLElement>();
 
-    <h1 className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-tight leading-[1.04] max-w-4xl">
-      Free 3D-printed prosthetics, built by students.
-    </h1>
-
-    <p className="mt-5 text-base sm:text-lg text-stone leading-relaxed max-w-xl">
-      A student nonprofit at The Bronx High School of Science. Every device is designed,
-      printed, assembled, and delivered at no cost to the recipient.
-    </p>
-
-    <div className="mt-7 flex items-center gap-7">
-      <button onClick={openRequestSheet} className="btn-primary">
-        Request a device
-      </button>
-      <a href={DONATE_MAILTO} className="link-quiet text-sm sm:text-base">
-        Donate
-      </a>
-    </div>
-  </header>
-);
+  return (
+    <section ref={scene} data-pose="hero" className="relative h-[190svh]">
+      <div className="hero-copy sticky top-0 h-[100svh] flex flex-col items-center text-center px-6 pt-[76px] pb-[10svh]">
+        <div data-slot className="flex-1 min-h-0 w-full max-w-[1120px] mb-[4svh]" />
+        <p className="rise rise-1 text-[clamp(1.1rem,1.6vw,1.5rem)] font-semibold tracking-[-0.01em] text-clay">
+          manus nova.
+        </p>
+        <h1 className="mt-2 text-[clamp(2.9rem,7vw,6rem)] font-semibold tracking-[-0.045em] leading-[1.02]">
+          <span className="mask"><span className="rise rise-2">Prosthetic hands,</span></span>
+          <span className="mask"><span className="rise rise-3">printed and given away.</span></span>
+        </h1>
+        <div className="rise rise-4 mt-8 flex items-center gap-7">
+          <button onClick={openRequestSheet} className="btn-primary">
+            Request a device
+          </button>
+          <a href="#free" className="link-arrow">
+            How it's paid for
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+};
 
 export default Hero;

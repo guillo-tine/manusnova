@@ -1,156 +1,190 @@
+@import "lenis/dist/lenis.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html { scroll-behavior: smooth; }
-
 @layer base {
   :root {
-    /* ── Palette ───────────────────────────────────────
-       bone   warm off-white canvas
-       sheet  white, reserved for figure documents
-       ink    warm near-black
-       stone  warm gray, secondary text
-       clay   accent, drawn from the red PLA the hands
-              are actually printed in                    */
-    --bone-rgb: 245 242 236;
-    --sheet-rgb: 255 255 255;
-    --ink-rgb: 28 25 23;
-    --stone-rgb: 110 105 97;
-    --clay-rgb: 168 92 63;
+    /* One committed look, like Apple's Pro pages: black stage, the red PLA
+       parts are the only color that isn't type.
+       bone   the black ground
+       sheet  raised surface (request dialog)
+       ink    primary text
+       stone  secondary text
+       clay   the PLA the hands print in */
+    --bone-rgb: 0 0 0;
+    --sheet-rgb: 29 29 31;
+    --ink-rgb: 245 245 247;
+    --stone-rgb: 134 134 139;
+    --clay-rgb: 214 120 84;
 
     --bone: rgb(var(--bone-rgb));
     --sheet: rgb(var(--sheet-rgb));
     --ink: rgb(var(--ink-rgb));
     --stone: rgb(var(--stone-rgb));
     --clay: rgb(var(--clay-rgb));
-    --line: rgb(var(--ink-rgb) / 0.12);
 
-    --font-sans: 'Instrument Sans', 'Helvetica Neue', sans-serif;
-    --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+    /* Apple's two workhorse curves, lifted from their product-page CSS */
+    --ease-apple: cubic-bezier(0.66, 0, 0.1, 1);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
-    /* shadcn tokens, remapped to the palette */
-    --background: 40 31% 94%;
-    --foreground: 24 10% 10%;
-    --card: 40 31% 94%;
-    --card-foreground: 24 10% 10%;
-    --popover: 40 31% 96%;
-    --popover-foreground: 24 10% 10%;
-    --primary: 17 45% 45%;
-    --primary-foreground: 40 31% 94%;
-    --secondary: 40 20% 90%;
-    --secondary-foreground: 24 10% 10%;
-    --muted: 40 20% 90%;
-    --muted-foreground: 37 6% 41%;
-    --accent: 17 45% 45%;
-    --accent-foreground: 40 31% 94%;
-    --destructive: 17 45% 45%;
-    --destructive-foreground: 40 31% 94%;
-    --border: 30 8% 80%;
-    --input: 30 8% 72%;
-    --ring: 17 45% 45%;
-    --radius: 0rem;
+    --font-sans: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+
+    --background: 0 0% 0%;
+    --foreground: 240 11% 96%;
+    --card: 240 3% 12%;
+    --card-foreground: 240 11% 96%;
+    --popover: 240 3% 12%;
+    --popover-foreground: 240 11% 96%;
+    --primary: 240 11% 96%;
+    --primary-foreground: 240 3% 12%;
+    --secondary: 240 3% 16%;
+    --secondary-foreground: 240 11% 96%;
+    --muted: 240 3% 16%;
+    --muted-foreground: 240 2% 54%;
+    --accent: 17 60% 58%;
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 70% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 3% 20%;
+    --input: 240 3% 24%;
+    --ring: 240 11% 96%;
+    --radius: 0.75rem;
   }
 }
 
 @layer base {
   * { @apply border-border; }
+  html { color-scheme: dark; scrollbar-width: none; }
+  html::-webkit-scrollbar { display: none; }
   body {
-    background-color: var(--bone);
+    background: var(--bone);
     color: var(--ink);
     font-family: var(--font-sans);
+    font-size: 17px;
+    letter-spacing: -0.022em;
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
-  ::selection {
-    background-color: var(--ink);
-    color: var(--bone);
-  }
-  :focus-visible {
-    outline: 2px solid var(--clay);
-    outline-offset: 2px;
-  }
+  ::selection { background-color: var(--clay); color: #000; }
+  :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 6px; }
 }
 
 @layer components {
-  /* The one primary action. Everything else defers to it. */
   .btn-primary {
-    @apply inline-flex items-center justify-center rounded-full bg-clay text-bone font-medium text-sm sm:text-base px-7 py-3.5 transition-colors hover:bg-[#8F4E36];
+    @apply inline-flex items-center justify-center rounded-full bg-ink text-black font-medium text-[17px] tracking-[-0.022em] px-[22px] py-[11px];
+    transition: background-color 0.3s var(--ease-out), transform 0.3s var(--ease-out);
   }
-  /* Quiet secondary links (Donate, contact routes) */
-  .link-quiet {
-    @apply text-stone hover:text-ink transition-colors underline-offset-4 hover:underline;
+  .btn-primary:hover { background-color: #ffffff; }
+  .btn-primary:active { transform: scale(0.97); }
+  .btn-small { @apply text-[12px] px-[11px] py-[4px]; }
+  .link-quiet { @apply text-stone hover:text-ink transition-colors duration-300; }
+  .link-arrow {
+    @apply text-clay text-[17px] tracking-[-0.022em] underline-offset-[5px] hover:underline;
   }
-  /* Mono micro-label: the only CAD trace that survives */
-  .fig-label {
-    @apply font-mono text-[10px] uppercase tracking-[0.14em] text-stone;
-  }
+  .link-arrow::after { content: "\00a0\203A"; }
 }
 
-/* ── The one motion idea: soft rise + fade, once ──── */
-.reveal {
+/* ── Global nav: Apple's frosted bar ─────────────────────── */
+.site-nav {
+  background: rgb(0 0 0 / 0.72);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgb(255 255 255 / 0.08);
   opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(-8px);
+  transition: opacity 1s var(--ease-out) 0.7s, transform 1s var(--ease-out) 0.7s;
 }
-.reveal.visible { opacity: 1; transform: translateY(0); }
+.is-ready .site-nav { opacity: 1; transform: none; }
 
-.reveal-rows > * {
+/* ── Opening sequence ─────────────────────────────────────── */
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #000;
+  display: grid;
+  place-items: center;
+  transition: opacity 1s var(--ease-apple);
+}
+.intro-name {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  color: var(--ink);
+  animation: introName 1.4s var(--ease-out) 0.15s both;
+}
+.intro-leaving { opacity: 0; pointer-events: none; }
+.intro-leaving .intro-name {
+  transform: scale(0.94);
+  filter: blur(6px);
+  transition: transform 1s var(--ease-apple), filter 1s var(--ease-apple);
+}
+@keyframes introName {
+  from { opacity: 0; transform: scale(1.06); filter: blur(12px); letter-spacing: -0.02em; }
+  to   { opacity: 1; transform: none; filter: none; letter-spacing: -0.045em; }
+}
+
+/* ── Hero: lines rise out of masks after the intro ───────── */
+.mask { display: block; overflow: hidden; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+.rise {
+  display: block;
   opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(105%);
+  transition: transform 1.3s var(--ease-out), opacity 1.3s var(--ease-out);
 }
-.reveal-rows.visible > * { opacity: 1; transform: none; }
-.reveal-rows.visible > *:nth-child(1) { transition-delay: 0ms; }
-.reveal-rows.visible > *:nth-child(2) { transition-delay: 80ms; }
-.reveal-rows.visible > *:nth-child(3) { transition-delay: 160ms; }
-.reveal-rows.visible > *:nth-child(4) { transition-delay: 240ms; }
-.reveal-rows.visible > *:nth-child(5) { transition-delay: 320ms; }
-.reveal-rows.visible > *:nth-child(6) { transition-delay: 400ms; }
-.reveal-rows.visible > *:nth-child(7) { transition-delay: 480ms; }
-.reveal-rows.visible > *:nth-child(8) { transition-delay: 560ms; }
+.rise-1 { transition-delay: 0.25s; }
+.rise-2 { transition-delay: 0.35s; }
+.rise-3 { transition-delay: 0.45s; }
+.rise-4 { transition-delay: 0.7s; transform: translateY(24px); }
+.is-ready .rise { opacity: 1; transform: none; }
 
-/* ── Exploded-diagram hotspots ────────────────────── */
-.hotspot {
-  position: absolute;
-  width: 22px;
-  height: 22px;
-  margin: -11px;
-  border-radius: 9999px;
-  border: 1.5px solid var(--clay);
-  background: rgb(var(--sheet-rgb) / 0.85);
-  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s;
+/* scroll-driven: --p is the hero's pinned progress (0 → 1) */
+.hero-copy {
+  --fade: clamp(0, calc(1 - var(--p, 0) * 2.4), 1);
+  opacity: var(--fade);
+  transform: translateY(calc(var(--p, 0) * -90px)) scale(calc(1 - var(--p, 0) * 0.08));
+  filter: blur(calc(var(--p, 0) * 10px));
+  will-change: opacity, transform, filter;
 }
-.hotspot::after {
-  content: '';
-  position: absolute;
-  inset: 5px;
-  border-radius: 9999px;
-  background: var(--clay);
+
+/* ── Honesty paragraph: words brighten one by one ────────── */
+.word { opacity: 0.18; transition: opacity 0.25s linear; }
+
+/* ── "Nothing." ─────────────────────────────────────────── */
+.free-word {
+  background: linear-gradient(180deg, #ffffff 0%, #f5f5f7 35%, rgb(var(--clay-rgb)) 110%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-bottom: 0.06em;
+}
+
+/* ── Reveal on arrival (Apple fires at 70% down the viewport) ── */
+[data-reveal],
+[data-reveal-stagger] > * {
   opacity: 0;
-  transition: opacity 0.25s;
+  transform: translateY(40px);
+  filter: blur(8px);
+  transition: opacity 1.2s var(--ease-out), transform 1.2s var(--ease-out), filter 1.2s var(--ease-out);
 }
-.hotspot:hover { transform: scale(1.2); }
-.hotspot[data-active="true"] { transform: scale(1.2); }
-.hotspot[data-active="true"]::after { opacity: 1; }
+[data-reveal].is-in,
+[data-reveal-stagger].is-in > * { opacity: 1; transform: none; filter: none; }
+[data-reveal-stagger].is-in > *:nth-child(2) { transition-delay: 0.06s; }
+[data-reveal-stagger].is-in > *:nth-child(3) { transition-delay: 0.12s; }
+[data-reveal-stagger].is-in > *:nth-child(4) { transition-delay: 0.18s; }
+[data-reveal-stagger].is-in > *:nth-child(5) { transition-delay: 0.24s; }
+[data-reveal-stagger].is-in > *:nth-child(6) { transition-delay: 0.3s; }
+[data-reveal-stagger].is-in > *:nth-child(7) { transition-delay: 0.36s; }
 
-/* ── Filed stamp on the request sheet ─────────────── */
-@keyframes stampIn {
-  0%   { opacity: 0; transform: scale(1.5) rotate(-9deg); }
-  60%  { opacity: 1; transform: scale(0.96) rotate(-4deg); }
-  100% { opacity: 1; transform: scale(1) rotate(-4deg); }
-}
-.stamp { animation: stampIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
-
-/* ── Reduced motion ──────────────────────────────── */
+/* Reduce-motion (often inherited from Windows' animation setting): keep what the
+   reader drives by scrolling, drop blur, drift, and travel. */
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-  .reveal, .reveal-rows > * { opacity: 1 !important; transform: none !important; }
-  .stamp { animation: none; opacity: 1; transform: rotate(-4deg); }
+  .intro-name { animation-name: introFade; }
+  .intro-leaving .intro-name { transform: none; filter: none; }
+  @keyframes introFade { from { opacity: 0; } to { opacity: 1; } }
+  .rise, .rise-4 { transform: none; }
+  .hero-copy { transform: none; filter: none; }
+  [data-reveal], [data-reveal-stagger] > * { transform: none; filter: none; }
 }

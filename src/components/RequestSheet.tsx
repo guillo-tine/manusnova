@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { EMAIL } from "@/lib/links";
+import { stage } from "@/lib/stage";
 
 /** FormSubmit delivers submissions to the team inbox with no backend.
     If the service is unreachable (or not yet activated), submissions
@@ -11,26 +12,17 @@ export function openRequestSheet() {
   window.dispatchEvent(new Event("open-request-sheet"));
 }
 
-const INK = "#1C1917";
-
-type Status = "idle" | "sending" | "filed";
+type Status = "idle" | "sending" | "sent";
 
 const RequestSheet = () => {
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
-  const [signed, setSigned] = useState(false);
-  const [needSign, setNeedSign] = useState(false);
-
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const padRef = useRef<HTMLDivElement>(null);
-  const penRef = useRef<HTMLDivElement>(null);
-  const drawing = useRef(false);
+  const firstField = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const onOpen = () => {
       setOpen(true);
       setStatus("idle");
-      setNeedSign(false);
     };
     window.addEventListener("open-request-sheet", onOpen);
     return () => window.removeEventListener("open-request-sheet", onOpen);
@@ -39,114 +31,27 @@ const RequestSheet = () => {
   useEffect(() => {
     if (!open) return;
     document.body.style.overflow = "hidden";
+    stage.lenis?.stop();
+    const focusTimer = setTimeout(() => firstField.current?.focus(), 350);
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
     };
     window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = "";
+      stage.lenis?.start();
+      clearTimeout(focusTimer);
       window.removeEventListener("keydown", onKey);
     };
   }, [open]);
 
-  // Size the canvas to its rendered box each time the sheet opens
-  useEffect(() => {
-    if (!open) return;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
-    const ctx = canvas.getContext("2d")!;
-    ctx.scale(dpr, dpr);
-    ctx.lineWidth = 2;
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-    ctx.strokeStyle = INK;
-    setSigned(false);
-  }, [open]);
-
-  /* ── Pen cursor follows the pointer over the pad ── */
-  const movePen = (e: React.PointerEvent) => {
-    const pad = padRef.current;
-    const pen = penRef.current;
-    if (!pad || !pen) return;
-    if (e.pointerType !== "mouse") return;
-    const rect = pad.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    pen.style.opacity = "1";
-    pen.style.transform = `translate(${x - 2}px, ${y - 26}px) rotate(${drawing.current ? -6 : 0}deg)`;
-  };
-  const hidePen = () => {
-    if (penRef.current) penRef.current.style.opacity = "0";
-  };
-
-  /* ── Drawing ── */
-  const pos = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
-  };
-  const down = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    e.currentTarget.setPointerCapture(e.pointerId);
-    drawing.current = true;
-    const ctx = canvasRef.current!.getContext("2d")!;
-    const { x, y } = pos(e);
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-  };
-  const draw = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    movePen(e);
-    if (!drawing.current) return;
-    const ctx = canvasRef.current!.getContext("2d")!;
-    const { x, y } = pos(e);
-    ctx.lineTo(x, y);
-    ctx.stroke();
-    if (!signed) {
-      setSigned(true);
-      setNeedSign(false);
-    }
-  };
-  const up = () => {
-    drawing.current = false;
-  };
-  const clear = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d")!;
-    ctx.save();
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.restore();
-    setSigned(false);
-  };
-
-  /** Shrink the signature onto a white card before shipping it. */
-  const signatureDataUrl = () => {
-    const source = canvasRef.current!;
-    const out = document.createElement("canvas");
-    const scale = Math.min(1, 600 / source.width);
-    out.width = Math.round(source.width * scale);
-    out.height = Math.round(source.height * scale);
-    const ctx = out.getContext("2d")!;
-    ctx.fillStyle = "#FFFFFF";
-    ctx.fillRect(0, 0, out.width, out.height);
-    ctx.drawImage(source, 0, 0, out.width, out.height);
-    return out.toDataURL("image/png");
-  };
-
-  const filed = () => {
-    setStatus("filed");
-    setTimeout(() => setOpen(false), 2200);
+  const sent = () => {
+    setStatus("sent");
+    setTimeout(() => setOpen(false), 2600);
   };
 
   const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!signed) {
-      setNeedSign(true);
-      return;
-    }
     const form = e.currentTarget;
     const name = (form.elements.namedItem("name") as HTMLInputElement).value;
     const contact = (form.elements.namedItem("contact") as HTMLInputElement).value;
@@ -164,173 +69,118 @@ const RequestSheet = () => {
           name,
           contact,
           message,
-          signature: signatureDataUrl(),
         }),
       });
       const json = await res.json();
       if (json.success === true || json.success === "true") {
-        filed();
+        sent();
         return;
       }
       throw new Error("submit failed");
     } catch {
-      const body = `Name: ${name}\nContact: ${contact}\n\n${message}\n\n(Signed by hand on manusnova.org)`;
+      const body = `Name: ${name}\nContact: ${contact}\n\n${message}`;
       window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(
         "Prosthetic device request"
       )}&body=${encodeURIComponent(body)}`;
-      filed();
+      sent();
     }
   };
 
-  const fieldLabel = "fig-label block mb-1.5";
-  const fieldInput =
-    "w-full bg-transparent border-0 border-b border-ink/30 focus:border-clay focus:outline-none focus:ring-0 py-2 text-ink text-sm placeholder:text-stone/50 transition-colors";
+  const label = "block text-[13px] font-medium text-ink mb-2";
+  const field =
+    "w-full rounded-xl bg-bone border border-transparent px-4 py-3 text-[15px] text-ink placeholder:text-stone/70 transition-colors focus:outline-none focus:border-white/30";
 
   return (
-    <div
-      className={`fixed inset-0 z-[60] ${open ? "" : "pointer-events-none"}`}
-      aria-hidden={!open}
-    >
-      {/* Backdrop */}
+    <div className={`fixed inset-0 z-[60] ${open ? "" : "pointer-events-none"}`} aria-hidden={!open}>
       <div
-        className={`absolute inset-0 bg-ink/40 backdrop-blur-sm transition-opacity duration-500 ${
+        className={`absolute inset-0 bg-black/50 backdrop-blur-xl transition-opacity duration-500 ${
           open ? "opacity-100" : "opacity-0"
         }`}
         onClick={() => setOpen(false)}
       />
 
-      {/* The paper */}
       <div className="absolute inset-0 flex items-end sm:items-center justify-center sm:p-6 pointer-events-none">
         <div
           role="dialog"
+          data-lenis-prevent
           aria-modal="true"
-          aria-label="Request a device"
-          className={`pointer-events-auto w-full max-w-lg max-h-[92vh] overflow-y-auto bg-sheet border border-ink/10 shadow-[0_24px_60px_-12px_rgb(28_25_23/0.25)] transition-all duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] ${
-            open ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"
+          aria-labelledby="rq-title"
+          className={`pointer-events-auto w-full max-w-[460px] max-h-[92svh] overflow-y-auto bg-sheet rounded-t-[28px] sm:rounded-[28px] ring-1 ring-white/10 shadow-[0_40px_100px_-20px_rgb(0_0_0/0.8)] transition-all duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] ${
+            open ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
           }`}
         >
-          <div className="flex items-center justify-between px-6 sm:px-8 pt-6 pb-4 border-b border-ink/10">
-            <p className="fig-label">Request form · Manus Nova</p>
+          <div className="flex items-start justify-between px-7 pt-7">
+            <h2 id="rq-title" className="text-[26px] font-semibold tracking-[-0.03em]">
+              Request a device
+            </h2>
             <button
               onClick={() => setOpen(false)}
               aria-label="Close"
-              className="link-quiet text-xl leading-none px-1"
+              className="-mr-1.5 -mt-0.5 w-8 h-8 rounded-full bg-bone text-stone hover:text-ink flex items-center justify-center transition-colors"
             >
-              ×
+              <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+                <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+              </svg>
             </button>
           </div>
 
-          {status === "filed" ? (
-            <div className="px-6 sm:px-8 py-16 flex flex-col items-center text-center">
-              <p className="stamp font-mono text-sm uppercase tracking-[0.2em] text-clay border-2 border-clay px-6 py-3">
-                Request filed
-              </p>
-              <p className="mt-6 text-sm text-stone max-w-xs">
-                A student will get back to you within a day or two.
+          {status === "sent" ? (
+            <div className="px-7 pt-6 pb-10">
+              <p className="text-[17px] text-ink">Sent.</p>
+              <p className="mt-1.5 text-[15px] text-stone">
+                A student will reply within a day or two.
               </p>
             </div>
           ) : (
-            <form onSubmit={submit} className="px-6 sm:px-8 py-6 space-y-6">
-              <div className="grid sm:grid-cols-2 gap-x-6 gap-y-6">
-                <div>
-                  <label htmlFor="rq-name" className={fieldLabel}>
-                    Name
-                  </label>
-                  <input
-                    id="rq-name"
-                    name="name"
-                    type="text"
-                    required
-                    autoComplete="name"
-                    placeholder="Your name"
-                    className={fieldInput}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="rq-contact" className={fieldLabel}>
-                    Email or phone
-                  </label>
-                  <input
-                    id="rq-contact"
-                    name="contact"
-                    type="text"
-                    required
-                    placeholder="How we reach you"
-                    className={fieldInput}
-                  />
-                </div>
-              </div>
-
+            <form onSubmit={submit} className="px-7 pt-5 pb-7 space-y-5">
+              <p className="text-[15px] leading-relaxed text-stone">
+                Free for the recipient. Plain language is fine.
+              </p>
               <div>
-                <label htmlFor="rq-message" className={fieldLabel}>
-                  What you need
+                <label htmlFor="rq-name" className={label}>
+                  Name
+                </label>
+                <input
+                  ref={firstField}
+                  id="rq-name"
+                  name="name"
+                  type="text"
+                  required
+                  autoComplete="name"
+                  className={field}
+                />
+              </div>
+              <div>
+                <label htmlFor="rq-contact" className={label}>
+                  Email or phone
+                </label>
+                <input id="rq-contact" name="contact" type="text" required className={field} />
+              </div>
+              <div>
+                <label htmlFor="rq-message" className={label}>
+                  Who it's for, and what they need
                 </label>
                 <textarea
                   id="rq-message"
                   name="message"
-                  rows={3}
+                  rows={4}
                   required
-                  placeholder="Who the device is for, and anything we should know. Plain language is fine."
-                  className={`${fieldInput} resize-none`}
+                  className={`${field} resize-none`}
                 />
               </div>
-
-              <div>
-                <div className="flex items-baseline justify-between mb-1.5">
-                  <span className="fig-label">Signature</span>
-                  <button type="button" onClick={clear} className="link-quiet text-xs">
-                    Clear
-                  </button>
-                </div>
-                <div
-                  ref={padRef}
-                  className="relative select-none"
-                  onPointerLeave={hidePen}
-                >
-                  <canvas
-                    ref={canvasRef}
-                    className="w-full h-28 block border-b border-dashed border-ink/40 touch-none [cursor:none]"
-                    onPointerDown={down}
-                    onPointerMove={draw}
-                    onPointerUp={up}
-                    onPointerCancel={up}
-                  />
-                  {!signed && (
-                    <span className="absolute left-1 bottom-2 text-stone/40 text-sm pointer-events-none">
-                      Sign here
-                    </span>
-                  )}
-                  {/* The pen that rides the cursor */}
-                  <div
-                    ref={penRef}
-                    className="absolute left-0 top-0 opacity-0 pointer-events-none transition-opacity duration-150 will-change-transform"
-                  >
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path
-                        d="M2 22l1.5-5L17 3.5a2.12 2.12 0 0 1 3 3L6.5 20 2 22Z"
-                        fill="#F5F2EC"
-                        stroke={INK}
-                        strokeWidth="1.4"
-                        strokeLinejoin="round"
-                      />
-                      <path d="M2 22l1.5-5 3.5 3.5L2 22Z" fill={INK} />
-                    </svg>
-                  </div>
-                </div>
-                {needSign && (
-                  <p className="mt-2 text-xs text-clay">Please sign the form first.</p>
-                )}
-              </div>
-
-              <div className="flex items-center justify-between gap-4 pt-1">
-                <button type="submit" disabled={status === "sending"} className="btn-primary">
-                  {status === "sending" ? "Filing…" : "Submit request"}
-                </button>
-                <a href={`mailto:${EMAIL}`} className="link-quiet text-xs">
-                  Prefer email? {EMAIL}
+              <button
+                type="submit"
+                disabled={status === "sending"}
+                className="btn-primary w-full disabled:opacity-60"
+              >
+                {status === "sending" ? "Sending…" : "Send request"}
+              </button>
+              <p className="text-center text-[13px] text-stone">
+                Or email{" "}
+                <a href={`mailto:${EMAIL}`} className="text-ink underline underline-offset-2">
+                  {EMAIL}
                 </a>
-              </div>
-
+              </p>
             </form>
           )}
         </div>

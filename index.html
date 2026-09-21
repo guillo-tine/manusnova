@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#F5F2EC" />
+    <meta name="theme-color" content="#000000" />
 
     <link rel="icon" href="/favicon.png" type="image/png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
@@ -11,12 +11,13 @@
     <!-- Google Fonts — preconnect first, then load -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet" />
+    <link rel="preload" href="/models/phoenix-hand.glb" as="fetch" type="model/gltf-binary" crossorigin />
 
     <!-- Primary SEO -->
-    <title>Manus Nova | Free 3D-Printed Prosthetics | Student Nonprofit · Bronx, NY</title>
-    <meta name="description" content="Manus Nova is a student-led nonprofit at The Bronx High School of Science that designs and 3D-prints free, custom prosthetic devices for community members in need. No cost. Ever." />
-    <meta name="keywords" content="Manus Nova, free prosthetics, 3D printed prosthetics, student nonprofit, Bronx High School of Science, nonprofit prosthetics Bronx NY, biomedical engineering students, community prosthetics" />
+    <title>manus nova.</title>
+    <meta name="description" content="Free 3D-printed prosthetic hands. Manus Nova is a student nonprofit that prints, assembles, and fits open-source e-NABLE hands and gives them away at no cost." />
+    <meta name="keywords" content="Manus Nova, free prosthetic hand, 3D printed prosthetic hand, e-NABLE, Phoenix Hand, free prosthetics, student nonprofit, prosthetics Bronx NY" />
     <meta name="author" content="Manus Nova" />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     <link rel="canonical" href="https://manusnova.org/" />
@@ -24,22 +25,22 @@
     <!-- Open Graph / Facebook / LinkedIn -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Manus Nova" />
-    <meta property="og:title" content="Manus Nova | Free 3D-Printed Prosthetics · Bronx, NY" />
-    <meta property="og:description" content="Student-led nonprofit designing and building free, custom 3D-printed prosthetics for community members in need. Based at The Bronx High School of Science." />
+    <meta property="og:title" content="manus nova." />
+    <meta property="og:description" content="Student nonprofit that prints and assembles free prosthetic hands from open-source e-NABLE designs." />
     <meta property="og:url" content="https://manusnova.org/" />
     <meta property="og:image" content="https://manusnova.org/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Manus Nova: A Helping Hand" />
+    <meta property="og:image:alt" content="Manus Nova: prosthetic hands, printed and given away" />
     <meta property="og:locale" content="en_US" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@projectmanusnova" />
-    <meta name="twitter:title" content="Manus Nova | Free 3D-Printed Prosthetics · Bronx, NY" />
-    <meta name="twitter:description" content="Student-led nonprofit designing and building free, custom 3D-printed prosthetics for community members in need." />
+    <meta name="twitter:title" content="manus nova." />
+    <meta name="twitter:description" content="Student nonprofit that prints and assembles free prosthetic hands from open-source e-NABLE designs." />
     <meta name="twitter:image" content="https://manusnova.org/og-image.png" />
-    <meta name="twitter:image:alt" content="Manus Nova: A Helping Hand" />
+    <meta name="twitter:image:alt" content="Manus Nova: prosthetic hands, printed and given away" />
 
     <!-- Structured Data: NGO (enhanced) -->
     <script type="application/ld+json">
@@ -56,19 +57,11 @@
         "height": 512
       },
       "image": "https://manusnova.org/og-image.png",
-      "description": "Manus Nova is a student-led nonprofit at The Bronx High School of Science that designs and 3D-prints free, custom prosthetic devices for community members in need. No cost to recipients.",
+      "description": "Manus Nova is a student-led nonprofit that 3D-prints and assembles free prosthetic hands from open-source e-NABLE designs. No cost to recipients.",
       "foundingDate": "2023",
       "foundingLocation": {
         "@type": "Place",
-        "name": "The Bronx High School of Science",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "75 W 205th St",
-          "addressLocality": "Bronx",
-          "addressRegion": "NY",
-          "postalCode": "10468",
-          "addressCountry": "US"
-        }
+        "name": "Bronx, New York"
       },
       "areaServed": {
         "@type": "City",
@@ -97,7 +90,7 @@
         { "@type": "Person", "name": "Krish Bhal", "alumniOf": "Macaulay Honors College" },
         { "@type": "Person", "name": "Ethan Thai", "alumniOf": "Stony Brook University" }
       ],
-      "disambiguatingDescription": "Manus Nova is a 501(c)(3) student nonprofit at The Bronx High School of Science that designs and 3D-prints free prosthetic devices. It is not affiliated with Manus (formerly Monica/Menace), the AI agent platform, or any artificial intelligence company.",
+      "disambiguatingDescription": "Manus Nova is a 501(c)(3) student nonprofit that 3D-prints and assembles free prosthetic hands from open-source e-NABLE designs. It is not affiliated with Manus (formerly Monica/Menace), the AI agent platform, or any artificial intelligence company.",
       "sameAs": [
         "https://www.instagram.com/projectmanusnova",
         "https://github.com/teammanusnova/manusnova"
@@ -116,7 +109,7 @@
           "name": "Is Manus Nova related to Manus AI or Menace?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "No. Manus Nova is a student-run nonprofit at The Bronx High School of Science that designs and 3D-prints free custom prosthetic devices. It has no connection to Manus (formerly Monica/Menace), the autonomous AI agent platform, or to any artificial intelligence company."
+            "text": "No. Manus Nova is a student-run nonprofit that 3D-prints and assembles free prosthetic hands from open-source e-NABLE designs. It has no connection to Manus (formerly Monica/Menace), the autonomous AI agent platform, or to any artificial intelligence company."
           }
         },
         {
@@ -124,7 +117,31 @@
           "name": "What does Manus Nova do?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Manus Nova designs, 3D-prints, and hand-delivers custom prosthetic devices to community members who need them, entirely free of charge. The organization is run by students in Bronx, New York, and funded by donations."
+            "text": "Manus Nova 3D-prints, assembles, and fits prosthetic hands built from open-source e-NABLE designs, and gives them to people who need them, entirely free of charge. Manus Nova did not design these devices. The organization is run by students in Bronx, New York, and funded by donations."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who designed the prosthetic hands Manus Nova builds?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The e-NABLE volunteer community. Manus Nova builds the Phoenix Hand v3, an open-source e-NABLE design. Manus Nova did not invent it and does not claim to; its role is printing, assembling, fitting, and giving the devices away."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much does a prosthetic hand from Manus Nova cost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nothing for the recipient. Materials run about $30 per hand and are covered by donations. Fittings are free."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I request a prosthetic hand?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Use the request form on manusnova.org or email teammanusnova@gmail.com. A student replies within a day or two, and a build typically takes two to four weeks."
           }
         }
       ]
@@ -138,13 +155,25 @@
       "@type": "WebSite",
       "name": "Manus Nova",
       "url": "https://manusnova.org/",
-      "description": "Student-led nonprofit building free 3D-printed prosthetics in the Bronx."
+      "description": "Student nonprofit printing free prosthetic hands from open-source e-NABLE designs in the Bronx."
     }
     </script>
   </head>
 
   <body>
     <div id="root"></div>
+    <noscript>
+      <main style="max-width:640px;margin:0 auto;padding:48px 24px;font-family:Arial,sans-serif;color:#f5f5f7;background:#000">
+        <h1>Manus Nova: prosthetic hands, printed and given away.</h1>
+        <p>Manus Nova is a student nonprofit in the Bronx, New York. We print, assemble, and fit prosthetic hands and give them away at no cost to the person who wears them.</p>
+        <h2>Designed by e-NABLE. Printed by us.</h2>
+        <p>Every device we build is the Phoenix Hand v3, an open-source design by the volunteers of <a href="https://enablingthefuture.org">e-NABLE</a>. We didn't invent it, and we never claim to.</p>
+        <h2>Free to the person who wears it</h2>
+        <p>Materials run about $30 a hand. Donations cover that, so the recipient never pays.</p>
+        <h2>Request a device</h2>
+        <p>Email <a href="mailto:teammanusnova@gmail.com">teammanusnova@gmail.com</a>. A student replies within a day or two; fittings are free, and a build takes two to four weeks.</p>
+      </main>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
