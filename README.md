@@ -19,11 +19,12 @@ Use Node 20 or newer. Vercel builds with Node 24.
 
 The site is hosted on **Vercel**, project `manusnova` in the team `guillo-tines-projects`. The domain `manusnova.org` is registered at **Namecheap** and points at Vercel.
 
-Production deploys are done from the command line. **Pushing to GitHub does not deploy.**
+The code lives at **https://github.com/guillo-tine/manusnova**, and the Vercel project is connected to it. **Every push to `main` goes live automatically**, in about a minute. Pushes to any other branch get a preview link instead. Collaborators on the repo can publish this way without a Vercel account.
+
+To deploy from your own machine without pushing (needs a login to the Vercel team):
 
 ```bash
-npx vercel login                                         # once, as a member of the Vercel team
-npx vercel --prod --yes --scope guillo-tines-projects    # build on Vercel and go live
+npx vercel --prod --yes --scope guillo-tines-projects
 ```
 
 The `deploy` / `gh-pages` scripts in package.json are left over from an old GitHub Pages setup. They are not used.
