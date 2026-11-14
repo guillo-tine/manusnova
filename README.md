@@ -49,6 +49,7 @@ The `deploy` / `gh-pages` scripts in package.json are left over from an old GitH
 | `public/` | Static files served as-is: favicon, `og-image.png` (link preview), robots.txt, sitemap.xml, the model |
 | `scripts/bake-hand.mjs` | Prepares the 3D model (see below) |
 | `src/components/ui/` | Unused shadcn/ui components from the original template. Safe to ignore |
+| `qa/` | Browser checks to run before deploying (see `qa/README.md`) |
 
 ## Common edits
 

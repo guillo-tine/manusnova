@@ -1,0 +1,20 @@
+{
+  "name": "manusnova-qa",
+  "private": true,
+  "type": "module",
+  "description": "Browser checks for manusnova.org. Run against npm run preview (port 5190) or the live site via URL=",
+  "scripts": {
+    "setup": "npx playwright install chromium webkit",
+    "clip": "node clip.mjs",
+    "reveal": "node reveal.mjs",
+    "sheet": "node sheet.mjs",
+    "all": "node clip.mjs && node reveal.mjs && node sheet.mjs",
+    "load": "node load.mjs",
+    "scroll": "node scroll.mjs",
+    "shots": "node shots.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.65.0",
+    "puppeteer-core": "^24.43.1"
+  }
+}
