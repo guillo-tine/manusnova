@@ -8,7 +8,7 @@ const Contact = () => (
     className="relative h-[100svh] min-h-[640px] flex flex-col items-center text-center px-6 pt-[76px] pb-[12svh]"
   >
     <div data-slot className="flex-1 min-h-0 w-full max-w-[720px] mb-[4svh]" />
-    <div data-reveal className="flex flex-col items-center">
+    <div data-reveal="quiet" className="flex flex-col items-center">
       <h2 className="text-[clamp(2.6rem,5.6vw,4.75rem)] font-semibold tracking-[-0.04em] leading-[1.0]">
         Need a hand?
       </h2>

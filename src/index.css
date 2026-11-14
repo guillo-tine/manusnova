@@ -121,9 +121,11 @@
   filter: blur(6px);
   transition: transform 1s var(--ease-apple), filter 1s var(--ease-apple);
 }
+/* opacity, transform and filter only: the browser can run these off the main thread, so the
+   opening stays smooth while the page loads underneath it */
 @keyframes introName {
-  from { opacity: 0; transform: scale(1.06); filter: blur(12px); letter-spacing: -0.02em; }
-  to   { opacity: 1; transform: none; filter: none; letter-spacing: -0.045em; }
+  from { opacity: 0; transform: scale(1.06); filter: blur(12px); }
+  to   { opacity: 1; transform: none; filter: none; }
 }
 
 /* ── Hero: lines rise out of masks after the intro ───────── */
@@ -145,8 +147,10 @@
   --fade: clamp(0, calc(1 - var(--p, 0) * 2.4), 1);
   opacity: var(--fade);
   transform: translateY(calc(var(--p, 0) * -90px)) scale(calc(1 - var(--p, 0) * 0.08));
-  filter: blur(calc(var(--p, 0) * 6px));
-  will-change: opacity, transform, filter;
+  /* no scroll-driven blur: each new blur radius made the GPU compile another shader, which
+     hitched the first second of scrolling by up to 350ms, and the text is gone before the
+     blur ever exceeds ~2.5px anyway */
+  will-change: opacity, transform;
 }
 
 /* ── Honesty paragraph: words brighten one by one ────────── */
@@ -158,7 +162,12 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  padding-bottom: 0.06em;
+  /* Gradient text only paints inside its own box, and leading 0.9 makes that box shorter
+     than the glyphs: without room below and to the right, descenders and the full stop
+     vanish. Pad the box out, then take the same space back so the layout doesn't move. */
+  display: inline-block;
+  padding: 0 0.12em 0.2em 0;
+  margin: 0 -0.12em -0.2em 0;
 }
 
 /* ── Reveal on arrival (Apple fires at 70% down the viewport) ── */
@@ -178,6 +187,27 @@
 [data-reveal-stagger].is-in > *:nth-child(6) { transition-delay: 0.3s; }
 [data-reveal-stagger].is-in > *:nth-child(7) { transition-delay: 0.36s; }
 
+/* Lite mode: set when the frame-rate monitor sees the machine struggling. Drops the
+   three effects that cost real GPU time per frame — the scroll-driven blur on the hero,
+   the blur on arriving blocks, and the frosted bar — and keeps everything that the
+   compositor can do for free. Layout and motion are unchanged. */
+.is-lite [data-reveal],
+.is-lite [data-reveal-stagger] > * { filter: none; }
+.is-lite .site-nav {
+  background: rgb(0 0 0 / 0.92);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Formal sections (mission, process, team, contact): a plain fade with a short lift.
+   The big rise-and-unblur stays on the showpiece moments only. */
+[data-reveal="quiet"],
+[data-reveal-stagger="quiet"] > * {
+  transform: translateY(12px);
+  filter: none;
+  transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+}
+
 /* Reduce-motion (often inherited from Windows' animation setting): keep what the
    reader drives by scrolling, drop blur, drift, and travel. */
 @media (prefers-reduced-motion: reduce) {
@@ -185,6 +215,6 @@
   .intro-leaving .intro-name { transform: none; filter: none; }
   @keyframes introFade { from { opacity: 0; } to { opacity: 1; } }
   .rise, .rise-4 { transform: none; }
-  .hero-copy { transform: none; filter: none; }
+  .hero-copy { transform: none; }
   [data-reveal], [data-reveal-stagger] > * { transform: none; filter: none; }
 }

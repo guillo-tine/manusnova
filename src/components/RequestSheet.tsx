@@ -86,7 +86,12 @@ const RequestSheet = () => {
     "w-full rounded-xl bg-bone border border-transparent px-4 py-3 text-[15px] text-ink placeholder:text-stone/70 transition-colors focus:outline-none focus:border-white/30";
 
   return (
-    <div className={`fixed inset-0 z-[60] ${open ? "" : "pointer-events-none"}`} aria-hidden={!open}>
+    // Closed, the sheet must be truly gone: hidden only after its fade-out finishes, so it
+    // can't catch clicks, the scroll wheel, taps, or keyboard focus over the page beneath.
+    <div
+      className={`fixed inset-0 z-[60] transition-[visibility] duration-500 ${open ? "visible" : "invisible pointer-events-none"}`}
+      aria-hidden={!open}
+    >
       <div
         className={`absolute inset-0 bg-black/50 backdrop-blur-xl transition-opacity duration-500 ${
           open ? "opacity-100" : "opacity-0"
@@ -100,7 +105,7 @@ const RequestSheet = () => {
           data-lenis-prevent
           aria-modal="true"
           aria-labelledby="rq-title"
-          className={`pointer-events-auto w-full max-w-[460px] max-h-[92svh] overflow-y-auto bg-sheet rounded-t-[28px] sm:rounded-[28px] ring-1 ring-white/10 shadow-[0_40px_100px_-20px_rgb(0_0_0/0.8)] transition-all duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] ${
+          className={`${open ? "pointer-events-auto" : ""} w-full max-w-[460px] max-h-[92svh] overflow-y-auto bg-sheet rounded-t-[28px] sm:rounded-[28px] ring-1 ring-white/10 shadow-[0_40px_100px_-20px_rgb(0_0_0/0.8)] transition-all duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] ${
             open ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
           }`}
         >

@@ -1,9 +1,10 @@
 import { useRef } from "react";
 import { usePinnedProgress } from "@/hooks/usePinnedProgress";
-import { DONATE_MAILTO, ENABLE_URL } from "@/lib/links";
+import { DONATE_MAILTO } from "@/lib/links";
+import { Count, Mission, Process } from "@/components/About";
 
 const HONESTY =
-  "These are the parts of the Phoenix Hand, an open-source design by the volunteers of e‑NABLE. We didn't invent it, and we never claim to. Our part is the work in between: we print every piece, assemble it by hand, fit it in person, and give it away.";
+  "These are the parts of our own hand. We designed it and tested it ourselves, to the standard we'd want for someone in our family. Then we print every piece, assemble it by hand, fit it in person, and give it away.";
 
 /** Pinned while each word brightens in turn as the reader scrolls. */
 const Honesty = () => {
@@ -28,7 +29,7 @@ const Honesty = () => {
           <div data-slot className="flex-1 min-h-0 mb-[4svh] md:hidden" />
           <div className="md:pr-8">
             <h2 className="text-[clamp(1.1rem,1.6vw,1.4rem)] font-semibold tracking-[-0.01em] text-clay">
-              Designed by e‑NABLE. Printed by us.
+              Designed, tested, and printed by us.
             </h2>
             <p className="mt-4 text-[clamp(1.5rem,2.5vw,2.35rem)] font-semibold tracking-[-0.03em] leading-[1.18]">
               {list.map((w, i) => (
@@ -43,14 +44,6 @@ const Honesty = () => {
                 </span>
               ))}
             </p>
-            <a
-              href={ENABLE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="link-arrow mt-7 inline-block"
-            >
-              About e‑NABLE
-            </a>
           </div>
           <div data-slot className="hidden md:block h-[70svh]" />
         </div>
@@ -67,7 +60,7 @@ const Free = () => (
         <h2 className="text-[clamp(1.1rem,1.6vw,1.4rem)] font-semibold tracking-[-0.01em] text-clay">
           What it costs the person who wears it
         </h2>
-        <p className="free-word mt-1 text-[clamp(4.25rem,9.5vw,9.5rem)] font-semibold tracking-[-0.06em] leading-[0.9]">
+        <p className="free-word mt-1 text-[clamp(4.25rem,9.5vw,8.25rem)] font-semibold tracking-[-0.06em] leading-[0.9]">
           Nothing.
         </p>
         <p className="mt-6 max-w-[26rem] text-[clamp(1.05rem,1.4vw,1.3rem)] leading-[1.45] tracking-[-0.015em] text-stone">
@@ -85,6 +78,9 @@ const Free = () => (
 const Story = () => (
   <>
     <Honesty />
+    <Mission />
+    <Count />
+    <Process />
     <Free />
   </>
 );

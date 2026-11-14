@@ -27,11 +27,11 @@ const Team = () => (
     </div>
     <div className="relative w-full max-w-[1120px] mx-auto px-6 grid md:grid-cols-2">
       <div className="md:pr-8">
-        <h2 data-reveal className="text-[clamp(2.4rem,5vw,4.25rem)] font-semibold tracking-[-0.035em] leading-[1.02] text-balance">
+        <h2 data-reveal="quiet" className="text-[clamp(2.4rem,5vw,4.25rem)] font-semibold tracking-[-0.035em] leading-[1.02] text-balance">
           The students printing them.
         </h2>
 
-        <ul data-reveal-stagger className="mt-10 space-y-1">
+        <ul data-reveal-stagger="quiet" className="mt-10 space-y-1">
           {crew.map((name) => (
             <li
               key={name}
@@ -42,7 +42,7 @@ const Team = () => (
           ))}
         </ul>
 
-        <div data-reveal>
+        <div data-reveal="quiet">
           <p className="mt-12 text-sm text-stone">Alumni, class of 2026</p>
           <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-1.5 text-[15px]">
             {alumni.map((person) => (
